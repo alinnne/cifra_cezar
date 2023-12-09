@@ -1,65 +1,104 @@
 programa
 {
-	inclua biblioteca Tipos
-	inclua biblioteca Texto
+    inclua biblioteca Tipos
+    inclua biblioteca Texto
 
-	const cadeia ALFABETO [26] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"}
-		
-	
-	funcao inicio()
-	{
+    const cadeia ALFABETO[26] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 
-		cadeia frase = "zebra"
-		
-		inteiro chave = 3
+    funcao inicio()
+    {
+        inteiro chave
+        cadeia frase
+        cadeia palavra_criptografada
 
-		criptografar(frase, chave)
+        escreva("Digite a palavra ou frase que deseja criptografar: ")
+        leia(frase)
 
-		
-	}
+        escreva("Digite a chave: ")
+        leia(chave)
 
-	funcao criptografar(cadeia frase, inteiro chave){
+        palavra_criptografada = criptografar(frase, chave)
+        escreva("Palavra Criptografada: ", palavra_criptografada, "\n")
 
-		caracter letra_caracter
-		cadeia letra_cadeia
-		inteiro numero_caracteres = Texto.numero_caracteres(frase)
+        
+        cadeia palavra_descriptografada = descriptografar(palavra_criptografada, chave)
+        escreva("Palavra Descriptografada: ", palavra_descriptografada, "\n")
+    }
 
-		
-		para(inteiro i=0; i < numero_caracteres; i++){
+    funcao cadeia criptografar(cadeia frase, inteiro chave)
+    {
+        cadeia palavra_crip = ""
 
-			logico encontrou = falso
+        caracter letra_caracter
+        cadeia letra_cadeia
+        inteiro numero_caracteres = Texto.numero_caracteres(frase)
 
-			letra_caracter = Texto.obter_caracter(frase, i )
-			letra_cadeia = Tipos.caracter_para_cadeia(letra_caracter)
+        para(inteiro i = 0; i < numero_caracteres; i++)
+        {
+            logico encontrou = falso
 
-			para(inteiro j=0; j < 25; j++){
-				se(letra_cadeia == ALFABETO[j]){
-					//escreva("encontramos na posição: " , j , "\n")
+            letra_caracter = Texto.obter_caracter(frase, i)
+            letra_cadeia = Tipos.caracter_para_cadeia(letra_caracter)
 
-					inteiro posicao = j + chave
+            para(inteiro j = 0; j < 26; j++)
+            {
+                se(letra_cadeia == ALFABETO[j])
+                {
+                    inteiro posicao = (j + chave) % 26
+                    palavra_crip += ALFABETO[posicao]
+                    encontrou = verdadeiro
 
-					escreva(ALFABETO [posicao])
+                    pare
+                }
+            }
 
-					encontrou = verdadeiro 
-				
+            se(encontrou == falso)
+            {
+                palavra_crip += letra_cadeia
+            }
+        }
 
-					pare
-				} 
+        retorne palavra_crip
+   }
 
-			}
 
-			se(encontrou == falso){
-				escreva(letra_cadeia)
-					
-			}
 
-		}
-		
-		
-		
-	}
 
-	funcao descriptografar(cadeia frase, inteiro chave){
-			
-	}
+    funcao cadeia descriptografar(cadeia frase, inteiro chave)
+    {
+        cadeia palavra_descriptografada = ""
+
+        caracter letra_caracter
+        cadeia letra_cadeia
+        inteiro numero_caracteres = Texto.numero_caracteres(frase)
+
+        para(inteiro i = 0; i < numero_caracteres; i++)
+        {
+            logico encontrou = falso
+
+            letra_caracter = Texto.obter_caracter(frase, i)
+            letra_cadeia = Tipos.caracter_para_cadeia(letra_caracter)
+
+            para(inteiro j = 0; j < 26; j++)
+            {
+                se(letra_cadeia == ALFABETO[j])
+                {
+                    inteiro posicao = (j - chave + 26) % 26
+                    palavra_descriptografada += ALFABETO[posicao]
+                    encontrou = verdadeiro
+
+                    pare
+                }
+            }
+
+            se(encontrou == falso)
+            {
+                palavra_descriptografada += letra_cadeia
+            }
+        }
+
+        retorne palavra_descriptografada
+
+        
+  }
 }
